@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Кармінна ніч — Барбарис</title>
+  <meta name="description" content="15 бордових троянд, євкаліпт, стрічка. Авторський букет від Барбарис.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .product-tabs { display: flex; gap: 2rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); }
+    .product-tab {
+      padding: 0.75rem 0; font-size: 0.9rem; font-weight: 500;
+      color: var(--text); cursor: none;
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .product-tab.active { color: var(--white); border-color: var(--green-l); }
+    .product-tab-content { display: none; }
+    .product-tab-content.active { display: block; }
+    .product-includes { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .product-includes li { display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; }
+    .product-includes li::before { content: '✦'; color: var(--green-l); font-size: 0.7rem; }
+    .related-section { padding: 6rem 0; background: var(--bg2); }
+    .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+    .back-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--green-l); margin-bottom: 3rem; transition: gap 0.3s; }
+    .back-link:hover { gap: 0.75rem; }
+    .quantity-wrap { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+    .qty-btn { width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 8px; background: transparent; color: var(--white); font-size: 1.2rem; cursor: none; display: flex; align-items: center; justify-content: center; transition: border-color 0.3s; }
+    .qty-btn:hover { border-color: var(--green); }
+    .qty-val { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--white); min-width: 2rem; text-align: center; }
+    .product-guarantee { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .product-guarantee-item { text-align: center; }
+    .product-guarantee-icon { font-size: 1.5rem; margin-bottom: 0.4rem; }
+    .product-guarantee-text { font-size: 0.75rem; color: var(--text); line-height: 1.4; }
+    .viewer-hint { position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(90,155,106,0.7); white-space: nowrap; pointer-events: none; }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a class="nav-logo" href="/">Барба<span>рис</span></a>
+      <ul class="nav-links">
+        <li><a href="/#catalog">Каталог</a></li>
+        <li><a href="/#about">Про нас</a></li>
+        <li><a href="/#reviews">Відгуки</a></li>
+      </ul>
+      <a href="/#order" class="nav-cta">Замовити</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── PRODUCT HERO ── -->
+<section class="product-hero">
+  <div class="container">
+    <a href="/" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <path d="M13 8H3M7 12l-4-4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Назад до каталогу
+    </a>
+
+    <div class="product-grid">
+      <!-- 3D Viewer -->
+      <div class="product-3d" style="position:relative;">
+        <canvas id="product-canvas"></canvas>
+        <div class="viewer-hint">Рухайте мишкою для обертання</div>
+      </div>
+
+      <!-- Product Info -->
+      <div class="product-info">
+        <div class="product-breadcrumb">
+          <a href="/">Головна</a> / <a href="/#catalog">Каталог</a> / Кармінна ніч
+        </div>
+        <h1 class="product-title">Кармінна ніч</h1>
+
+        <div class="product-rating">
+          <span class="product-stars">★★★★★</span>
+          <span class="product-reviews-count">4.9 · 47 відгуків</span>
+        </div>
+
+        <div class="product-price">1 850 ₴</div>
+
+        <p class="product-desc">
+          Розкішний букет із 15 свіжих бордових троянд сорту «Burgundy», доповнений
+          ніжним евкаліптом та перев'язаний шовковою стрічкою. Ідеальний подарунок для
+          особливих моментів — визнання, вечірки або просто щоб здивувати.
+        </p>
+
+        <!-- Tabs -->
+        <div class="product-tabs">
+          <button class="product-tab active" data-tab="composition">Склад</button>
+          <button class="product-tab" data-tab="care">Догляд</button>
+          <button class="product-tab" data-tab="delivery">Доставка</button>
+        </div>
+
+        <div class="product-tab-content active" id="tab-composition">
+          <ul class="product-includes">
+            <li>15 бордових троянд «Burgundy» (50 см)</li>
+            <li>5 гілок евкаліпту</li>
+            <li>3 гілки рускуса</li>
+            <li>Шовкова стрічка (темно-зелена)</li>
+            <li>Крафт-папір + перламутровий папір</li>
+            <li>Флористична губка для свіжості</li>
+            <li>Листівка з вашим написом</li>
+          </ul>
+        </div>
+
+        <div class="product-tab-content" id="tab-care">
+          <ul class="product-includes">
+            <li>Підрізайте стебла під кутом 45° кожні 2 дні</li>
+            <li>Міняйте воду щоденно, додаючи підживлення</li>
+            <li>Тримайте подалі від прямого сонця та протягів</li>
+            <li>Оптимальна температура +18…+22°C</li>
+            <li>Термін свіжості: 7–10 днів при правильному догляді</li>
+          </ul>
+        </div>
+
+        <div class="product-tab-content" id="tab-delivery">
+          <ul class="product-includes">
+            <li>Доставка по Києву від 1–2 годин</li>
+            <li>Вартість доставки: 150–250 ₴ залежно від зони</li>
+            <li>Самовивіз: вул. Саксаганського 72 (безкоштовно)</li>
+            <li>Доставка щодня з 8:00 до 21:00</li>
+            <li>Термінова доставка за 1 год: +100 ₴</li>
+          </ul>
+        </div>
+
+        <!-- Size -->
+        <div class="product-options" style="margin-top:1.5rem">
+          <div class="product-option-label">Розмір</div>
+          <div class="product-sizes">
+            <button class="product-size">S · 9 квіток</button>
+            <button class="product-size active">M · 15 квіток</button>
+            <button class="product-size">L · 25 квіток</button>
+          </div>
+        </div>
+
+        <!-- Quantity -->
+        <div class="quantity-wrap">
+          <button class="qty-btn" id="qty-minus">−</button>
+          <span class="qty-val" id="qty-val">1</span>
+          <button class="qty-btn" id="qty-plus">+</button>
+        </div>
+
+        <!-- Actions -->
+        <div class="product-actions">
+          <a href="/#order" class="btn-primary confetti-trigger" style="flex:1;justify-content:center;text-decoration:none;">
+            <span>Замовити</span>
+          </a>
+          <button class="btn-outline" style="padding:1rem 1rem;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Guarantees -->
+        <div class="product-guarantee">
+          <div class="product-guarantee-item">
+            <div class="product-guarantee-icon">🌿</div>
+            <div class="product-guarantee-text">Гарантія<br>свіжості</div>
+          </div>
+          <div class="product-guarantee-item">
+            <div class="product-guarantee-icon">🚚</div>
+            <div class="product-guarantee-text">Доставка<br>вчасно</div>
+          </div>
+          <div class="product-guarantee-item">
+            <div class="product-guarantee-icon">♻️</div>
+            <div class="product-guarantee-text">Еко-<br>упаковка</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RELATED ── -->
+<section class="related-section">
+  <div class="container">
+    <div class="section-label">Вам також може сподобатись</div>
+    <h3 data-split style="opacity:0;transform:translateY(30px)">Схожі букети</h3>
+    <div class="related-grid">
+      <div class="product-card">
+        <div class="product-card-visual">
+          <canvas class="product-card-canvas"></canvas>
+          <div class="product-card-overlay">
+            <a href="product.html" class="product-card-action">Детальніше</a>
+          </div>
+        </div>
+        <div class="product-card-name">Смарагдова весна</div>
+        <div class="product-card-desc">Піони, фрезія, зелені акценти</div>
+        <div class="product-card-footer">
+          <div class="product-card-price">2 200 ₴</div>
+          <div class="product-card-rating">★★★★★ 5.0</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-visual">
+          <canvas class="product-card-canvas"></canvas>
+          <div class="product-card-overlay">
+            <a href="product.html" class="product-card-action">Детальніше</a>
+          </div>
+        </div>
+        <div class="product-card-name">Ніжний шовк</div>
+        <div class="product-card-desc">Піони, тюльпани, біла гортензія</div>
+        <div class="product-card-footer">
+          <div class="product-card-price">3 200 ₴</div>
+          <div class="product-card-rating">★★★★★ 5.0</div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-visual">
+          <canvas class="product-card-canvas"></canvas>
+          <div class="product-card-overlay">
+            <a href="product.html" class="product-card-action">Детальніше</a>
+          </div>
+        </div>
+        <div class="product-card-name">Бузкові мрії</div>
+        <div class="product-card-desc">Еустома, лаванда, гортензія</div>
+        <div class="product-card-footer">
+          <div class="product-card-price">1 650 ₴</div>
+          <div class="product-card-rating">★★★★☆ 4.8</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SCRIPTS ── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+
+<script src="js/shaders.js"></script>
+<script src="js/bouquet3d.js"></script>
+<script src="js/cursor.js"></script>
+<script src="js/main.js"></script>
+
+<script>
+  if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Product 3D viewer
+    const canvas = document.getElementById('product-canvas');
+    if (canvas && window.THREE && window.Bouquet3D) {
+      canvas.style.cssText = 'width:100%;height:100%;display:block;';
+      new Bouquet3D(canvas, { rotate: true, alpha: false, bg: 0x0d1a0e, interactive: true });
+    }
+
+    // Custom cursor
+    if (window.innerWidth > 768 && window.BarbarisFollower) {
+      new BarbarisFollower();
+    }
+
+    // Tabs
+    document.querySelectorAll('.product-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const id = tab.dataset.tab;
+        document.querySelectorAll('.product-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.product-tab-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('tab-' + id)?.classList.add('active');
+      });
+    });
+
+    // Quantity
+    let qty = 1;
+    const qtyVal = document.getElementById('qty-val');
+    document.getElementById('qty-minus')?.addEventListener('click', () => {
+      if (qty > 1) { qty--; qtyVal.textContent = qty; }
+    });
+    document.getElementById('qty-plus')?.addEventListener('click', () => {
+      qty++; qtyVal.textContent = qty;
+    });
+
+    // Size selector
+    document.querySelectorAll('.product-size').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.product-size').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    // Nav scroll
+    const nav = document.querySelector('.nav');
+    window.addEventListener('scroll', () => {
+      nav?.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // Scroll reveals
+    if (window.ScrollTrigger) {
+      document.querySelectorAll('[data-split]').forEach(el => {
+        gsap.set(el, { opacity: 1 });
+        const chars = el.querySelectorAll('.char-inner');
+        if (chars.length) {
+          gsap.to(chars, {
+            y: 0, duration: 0.8, stagger: 0.02, ease: 'expo.out',
+            scrollTrigger: { trigger: el, start: 'top 80%', once: true },
+          });
+        } else {
+          gsap.to(el, { opacity: 1, y: 0, duration: 0.8, ease: 'expo.out',
+            scrollTrigger: { trigger: el, start: 'top 80%', once: true } });
+        }
+      });
+      gsap.from('.related-grid .product-card', {
+        opacity: 0, y: 40, stagger: 0.12, duration: 0.7, ease: 'expo.out',
+        scrollTrigger: { trigger: '.related-grid', start: 'top 80%', once: true },
+      });
+    }
+
+    // Smooth scroll
+    if (window.Lenis) {
+      const lenis = new Lenis({ duration: 1.4 });
+      function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+  });
+</script>
+</body>
+</html>
