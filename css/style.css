@@ -107,6 +107,7 @@ a { color: inherit; text-decoration: none; }
   gap: 2.5rem;
   list-style: none;
 }
+.nav-links li { list-style: none; }
 .nav-links a {
   font-size: 0.875rem;
   font-weight: 500;
@@ -377,6 +378,7 @@ a { color: inherit; text-decoration: none; }
 .product-card-visual {
   position: relative;
   aspect-ratio: 3/4;
+  min-height: 280px;
   border-radius: 16px;
   overflow: hidden;
   margin-bottom: 1.25rem;
@@ -390,12 +392,12 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* Card CSS gradient backgrounds */
-.gc-1 { background: radial-gradient(ellipse at 40% 30%, #8b1a2e 0%, #4a0d18 55%, #150609 100%); }
-.gc-2 { background: radial-gradient(ellipse at 60% 40%, #2a5c38 0%, #14301c 50%, #1e1228 100%); }
-.gc-3 { background: radial-gradient(ellipse at 50% 35%, #6b4a8b 0%, #3d2660 55%, #1a0f2a 100%); }
-.gc-4 { background: radial-gradient(ellipse at 55% 30%, #8b5a18 0%, #5c3309 55%, #1a0e04 100%); }
-.gc-5 { background: radial-gradient(ellipse at 50% 40%, #1a5c7a 0%, #0d3348 55%, #050e14 100%); }
-.gc-6 { background: radial-gradient(ellipse at 50% 30%, #7a5a6b 0%, #4a2e3d 55%, #1a0f14 100%); }
+.gc-1 { background: radial-gradient(ellipse at 40% 35%, #7B1A1A 0%, #3D0A0A 45%, #1a0a0a 100%); }
+.gc-2 { background: radial-gradient(ellipse at 50% 40%, #2D5A27 0%, #1B3D18 45%, #0a1a08 100%); }
+.gc-3 { background: radial-gradient(ellipse at 45% 38%, #5B2D8E 0%, #3A1A5C 45%, #150a22 100%); }
+.gc-4 { background: radial-gradient(ellipse at 50% 35%, #8B5E00 0%, #5C3D00 45%, #1a1000 100%); }
+.gc-5 { background: radial-gradient(ellipse at 48% 40%, #0A4A7A 0%, #062D4F 45%, #010f1c 100%); }
+.gc-6 { background: radial-gradient(ellipse at 50% 35%, #8B6B6B 0%, #5C3D3D 45%, #1a0f0f 100%); }
 .product-card-visual { transition: transform 0.4s var(--ease-expo); }
 .product-card:hover .product-card-visual { transform: scale(1.03); }
 .product-card-badge {
@@ -668,7 +670,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ── ORDER ── */
 #order {
-  padding: 10rem 0;
+  padding: 5rem 0 10rem;
   position: relative;
   overflow: hidden;
 }
@@ -871,6 +873,7 @@ footer {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
+  top: unset;
   width: 56px;
   height: 56px;
   background: #229ED9;
