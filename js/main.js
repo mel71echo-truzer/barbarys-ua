@@ -3,27 +3,33 @@
    Lenis + GSAP ScrollTrigger + SplitText + Catalog + Confetti
    ============================================================ */
 
-/* ── Utility: SplitText — preserves <br>, <em>, nested elements ── */
-function splitTextToChars(el) {
+/* ── Utility: SplitText — word-level split, preserves <br>, <em> ── */
+function splitTextToWords(el) {
   el.setAttribute('aria-label', el.innerText);
 
   function processNode(node) {
     if (node.nodeType === Node.TEXT_NODE) {
       const frag = document.createDocumentFragment();
-      [...node.textContent].forEach(ch => {
-        const outer = document.createElement('span');
-        outer.className = 'char';
-        const inner = document.createElement('span');
-        inner.className = 'char-inner';
-        inner.textContent = ch;
-        outer.appendChild(inner);
-        frag.appendChild(outer);
+      const parts = node.textContent.split(/(\s+)/);
+      parts.forEach(part => {
+        if (!part) return;
+        if (/^\s+$/.test(part)) {
+          frag.appendChild(document.createTextNode(part));
+        } else {
+          const outer = document.createElement('span');
+          outer.className = 'char';
+          const inner = document.createElement('span');
+          inner.className = 'char-inner';
+          inner.textContent = part;
+          outer.appendChild(inner);
+          frag.appendChild(outer);
+        }
       });
       node.replaceWith(frag);
     } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'BR') {
       [...node.childNodes].forEach(processNode);
     }
-    // BR elements and unknown nodes are left intact
+    // BR and unknown nodes left intact
   }
 
   [...el.childNodes].forEach(processNode);
@@ -69,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroScroll = document.querySelector('.hero-scroll');
 
   if (heroTitle) {
-    const chars = splitTextToChars(heroTitle);
+    const chars = splitTextToWords(heroTitle);
     gsap.to(heroLabel, { opacity: 1, y: 0, duration: 0.8, delay: 0.3, ease: 'expo.out' });
     // Fix: also reset the translateY(30px) set in CSS on the wrapper
     gsap.to(heroTitle, { opacity: 1, y: 0, duration: 0.6, delay: 0.4, ease: 'expo.out' });
@@ -104,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Section headings char-by-char
     document.querySelectorAll('[data-split]').forEach(el => {
-      const chars = splitTextToChars(el);
+      const chars = splitTextToWords(el);
       gsap.set(el, { opacity: 1 });
       gsap.to(chars, {
         y: 0, duration: 0.8, stagger: 0.02, ease: 'expo.out',
