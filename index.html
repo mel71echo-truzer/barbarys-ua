@@ -8,7 +8,28 @@
   <meta property="og:title" content="Барбарис — Квіткова майстерня">
   <meta property="og:description" content="Авторські букети з душею. Київ, доставка щодня.">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1487530811015-780a5d8c4d4b?w=1200">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Florist",
+    "name": "Барбарис",
+    "description": "Авторська флористика в Києві. Преміальні букети та флористичні композиції.",
+    "url": "https://barbarys-ua.vercel.app",
+    "image": "https://images.unsplash.com/photo-1487530811015-780a5d8c4d4b?w=1200",
+    "telephone": "+380501234567",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "вул. Саксаганського 72",
+      "addressLocality": "Київ",
+      "addressCountry": "UA"
+    },
+    "openingHours": "Mo-Su 08:00-21:00",
+    "priceRange": "₴₴"
+  }
+  </script>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,6 +52,9 @@
         <li><a href="#process">Процес</a></li>
         <li><a href="#reviews">Відгуки</a></li>
       </ul>
+      <button class="nav-toggle" aria-label="Меню" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
       <a href="#order" class="nav-cta">Замовити</a>
     </div>
   </div>
@@ -61,10 +85,12 @@
     </div>
   </div>
 
-  <div class="hero-scroll">
-    <div class="hero-scroll-line"></div>
+  <a href="#catalog" class="hero-scroll" aria-label="Прокрутити вниз">
     <span>Scroll</span>
-  </div>
+    <svg class="hero-scroll-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 9l6 6 6-6"/>
+    </svg>
+  </a>
 </section>
 
 <!-- ── MARQUEE ── -->
@@ -105,11 +131,10 @@
 
       <!-- Card 1 -->
       <div class="product-card" data-cursor="view" data-cursor-media="#3d1a25">
-        <div class="product-card-visual">
-          <canvas class="product-card-canvas"></canvas>
+        <div class="product-card-visual gc-1">
           <div class="product-card-badge">Хіт сезону</div>
           <div class="product-card-overlay">
-            <a href="product.html" class="product-card-action">Детальніше</a>
+            <a href="product.html?id=1" class="product-card-action">Детальніше</a>
           </div>
         </div>
         <div class="product-card-name">Кармінна ніч</div>
@@ -122,11 +147,10 @@
 
       <!-- Card 2 -->
       <div class="product-card" data-cursor="view" data-cursor-media="#1a2e1c">
-        <div class="product-card-visual">
-          <canvas class="product-card-canvas"></canvas>
+        <div class="product-card-visual gc-2">
           <div class="product-card-badge">Новинка</div>
           <div class="product-card-overlay">
-            <a href="product.html" class="product-card-action">Детальніше</a>
+            <a href="product.html?id=2" class="product-card-action">Детальніше</a>
           </div>
         </div>
         <div class="product-card-name">Смарагдова весна</div>
@@ -139,10 +163,9 @@
 
       <!-- Card 3 -->
       <div class="product-card" data-cursor="view" data-cursor-media="#2a1a30">
-        <div class="product-card-visual">
-          <canvas class="product-card-canvas"></canvas>
+        <div class="product-card-visual gc-3">
           <div class="product-card-overlay">
-            <a href="product.html" class="product-card-action">Детальніше</a>
+            <a href="product.html?id=3" class="product-card-action">Детальніше</a>
           </div>
         </div>
         <div class="product-card-name">Бузкові мрії</div>
@@ -155,11 +178,10 @@
 
       <!-- Card 4 -->
       <div class="product-card" data-cursor="view" data-cursor-media="#2e1a0e">
-        <div class="product-card-visual">
-          <canvas class="product-card-canvas"></canvas>
+        <div class="product-card-visual gc-4">
           <div class="product-card-badge">Популярне</div>
           <div class="product-card-overlay">
-            <a href="product.html" class="product-card-action">Детальніше</a>
+            <a href="product.html?id=4" class="product-card-action">Детальніше</a>
           </div>
         </div>
         <div class="product-card-name">Золота осінь</div>
@@ -172,10 +194,9 @@
 
       <!-- Card 5 -->
       <div class="product-card" data-cursor="view" data-cursor-media="#1a2830">
-        <div class="product-card-visual">
-          <canvas class="product-card-canvas"></canvas>
+        <div class="product-card-visual gc-5">
           <div class="product-card-overlay">
-            <a href="product.html" class="product-card-action">Детальніше</a>
+            <a href="product.html?id=5" class="product-card-action">Детальніше</a>
           </div>
         </div>
         <div class="product-card-name">Морська лазур</div>
@@ -188,11 +209,10 @@
 
       <!-- Card 6 -->
       <div class="product-card" data-cursor="view" data-cursor-media="#301a1a">
-        <div class="product-card-visual">
-          <canvas class="product-card-canvas"></canvas>
+        <div class="product-card-visual gc-6">
           <div class="product-card-badge">Преміум</div>
           <div class="product-card-overlay">
-            <a href="product.html" class="product-card-action">Детальніше</a>
+            <a href="product.html?id=6" class="product-card-action">Детальніше</a>
           </div>
         </div>
         <div class="product-card-name">Ніжний шовк</div>
@@ -217,11 +237,11 @@
         </div>
         <div class="about-stats">
           <div>
-            <div class="about-stat-num" data-count="7" data-suffix="">7<span>+</span></div>
+            <div class="about-stat-num" data-count="7" data-suffix="+">7<span>+</span></div>
             <div class="about-stat-label">Років досвіду</div>
           </div>
           <div>
-            <div class="about-stat-num" data-count="12000" data-suffix="">12к<span>+</span></div>
+            <div class="about-stat-num" data-count="12" data-suffix="к+">12к<span>+</span></div>
             <div class="about-stat-label">Букетів створено</div>
           </div>
           <div>
@@ -474,19 +494,19 @@
         <div class="footer-logo">Барба<span>рис</span></div>
         <p>Авторська флористика в Києві. Ми створюємо букети, які стають спогадами.</p>
         <div class="footer-socials">
-          <a href="#" class="footer-social" aria-label="Instagram">
+          <a href="https://instagram.com/barbarys.kyiv" class="footer-social" aria-label="Instagram" target="_blank" rel="noopener">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
               <circle cx="12" cy="12" r="4"/>
               <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
             </svg>
           </a>
-          <a href="#" class="footer-social" aria-label="Facebook">
+          <a href="https://facebook.com/barbarys" class="footer-social" aria-label="Facebook" target="_blank" rel="noopener">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
             </svg>
           </a>
-          <a href="#" class="footer-social" aria-label="Telegram">
+          <a href="https://t.me/barbarys_kyiv" class="footer-social" aria-label="Telegram" target="_blank" rel="noopener">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/>
             </svg>
@@ -497,22 +517,22 @@
       <div>
         <div class="footer-col-title">Каталог</div>
         <ul class="footer-links">
-          <li><a href="#">Троянди</a></li>
-          <li><a href="#">Піони</a></li>
-          <li><a href="#">Орхідеї</a></li>
-          <li><a href="#">Змішані букети</a></li>
-          <li><a href="#">Весільна флористика</a></li>
+          <li><a href="#catalog">Троянди</a></li>
+          <li><a href="#catalog">Піони</a></li>
+          <li><a href="#catalog">Орхідеї</a></li>
+          <li><a href="#catalog">Змішані букети</a></li>
+          <li><a href="#order">Весільна флористика</a></li>
         </ul>
       </div>
 
       <div>
         <div class="footer-col-title">Інформація</div>
         <ul class="footer-links">
-          <li><a href="#">Про нас</a></li>
-          <li><a href="#">Доставка і оплата</a></li>
-          <li><a href="#">Догляд за квітами</a></li>
-          <li><a href="#">Відгуки</a></li>
-          <li><a href="#">Контакти</a></li>
+          <li><a href="#about">Про нас</a></li>
+          <li><a href="#process">Доставка і оплата</a></li>
+          <li><a href="#process">Догляд за квітами</a></li>
+          <li><a href="#reviews">Відгуки</a></li>
+          <li><a href="#order">Контакти</a></li>
         </ul>
       </div>
 
@@ -538,11 +558,18 @@
     </div>
 
     <div class="footer-bottom">
-      <span>© 2025 Барбарис. Всі права захищені.</span>
+      <span>© 2026 Барбарис. Всі права захищені.</span>
       <span>Зроблено з ❤️ для тих, хто любить квіти</span>
     </div>
   </div>
 </footer>
+
+<!-- ── TELEGRAM FLOAT ── -->
+<a href="https://t.me/barbarys_kyiv" class="tg-float" aria-label="Написати в Telegram" target="_blank" rel="noopener">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+  </svg>
+</a>
 
 <!-- ── SCRIPTS ── -->
 <!-- Three.js -->
@@ -562,9 +589,33 @@
 <script src="js/main.js"></script>
 
 <script>
-  // Register GSAP plugin
-  if (window.gsap && window.ScrollTrigger) {
-    gsap.registerPlugin(ScrollTrigger);
+  if (window.gsap && window.ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+
+  // Hamburger menu
+  const toggle = document.querySelector('.nav-toggle');
+  const navLinks = document.querySelector('.nav-links');
+  if (toggle && navLinks) {
+    toggle.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      toggle.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', open);
+    });
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        toggle.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  // Hero scroll IntersectionObserver fade
+  const heroScroll = document.querySelector('.hero-scroll');
+  if (heroScroll) {
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) heroScroll.style.opacity = '0';
+    }, { threshold: 0, rootMargin: '-80px 0px 0px 0px' });
+    io.observe(document.querySelector('#hero'));
   }
 </script>
 </body>

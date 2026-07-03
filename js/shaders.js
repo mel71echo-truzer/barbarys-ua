@@ -176,7 +176,16 @@ window.initCelestialBloom = function(canvas) {
   if (!canvas) return;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+
+  function getDims() {
+    const p = canvas.parentElement;
+    const w = (p ? p.clientWidth  : 0) || canvas.clientWidth  || 800;
+    const h = (p ? p.clientHeight : 0) || canvas.clientHeight || 600;
+    return { w, h };
+  }
+
+  const { w: iw, h: ih } = getDims();
+  renderer.setSize(iw, ih, false); // false = don't override CSS display size
 
   const scene  = new THREE.Scene();
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
@@ -186,7 +195,7 @@ window.initCelestialBloom = function(canvas) {
     fragmentShader: SHADERS.celestialBloomFrag,
     uniforms: {
       u_time:       { value: 0 },
-      u_resolution: { value: new THREE.Vector2(canvas.clientWidth, canvas.clientHeight) },
+      u_resolution: { value: new THREE.Vector2(iw, ih) },
     },
   });
 
@@ -196,11 +205,17 @@ window.initCelestialBloom = function(canvas) {
   let raf, startTime = performance.now();
 
   function resize() {
-    const w = canvas.clientWidth, h = canvas.clientHeight;
-    renderer.setSize(w, h);
+    const { w, h } = getDims();
+    if (!w || !h) return;
+    renderer.setSize(w, h, false);
     material.uniforms.u_resolution.value.set(w, h);
   }
-  window.addEventListener('resize', resize);
+
+  if (window.ResizeObserver) {
+    new ResizeObserver(resize).observe(canvas.parentElement || canvas);
+  } else {
+    window.addEventListener('resize', resize);
+  }
 
   function tick() {
     raf = requestAnimationFrame(tick);

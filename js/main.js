@@ -1,22 +1,32 @@
 /* ============================================================
-   BARBARYS — Main JS
+   BARBARYS - Main JS
    Lenis + GSAP ScrollTrigger + SplitText + Catalog + Confetti
    ============================================================ */
 
-/* ── Utility: SplitText (lightweight implementation) ── */
+/* ── Utility: SplitText — preserves <br>, <em>, nested elements ── */
 function splitTextToChars(el) {
-  const text = el.textContent;
-  el.textContent = '';
-  el.setAttribute('aria-label', text);
-  [...text].forEach(char => {
-    const outer = document.createElement('span');
-    outer.className = 'char';
-    const inner = document.createElement('span');
-    inner.className = 'char-inner';
-    inner.textContent = char === ' ' ? ' ' : char;
-    outer.appendChild(inner);
-    el.appendChild(outer);
-  });
+  el.setAttribute('aria-label', el.innerText);
+
+  function processNode(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const frag = document.createDocumentFragment();
+      [...node.textContent].forEach(ch => {
+        const outer = document.createElement('span');
+        outer.className = 'char';
+        const inner = document.createElement('span');
+        inner.className = 'char-inner';
+        inner.textContent = ch;
+        outer.appendChild(inner);
+        frag.appendChild(outer);
+      });
+      node.replaceWith(frag);
+    } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName !== 'BR') {
+      [...node.childNodes].forEach(processNode);
+    }
+    // BR elements and unknown nodes are left intact
+  }
+
+  [...el.childNodes].forEach(processNode);
   return el.querySelectorAll('.char-inner');
 }
 
@@ -29,64 +39,50 @@ document.addEventListener('DOMContentLoaded', () => {
     lenis = new Lenis({
       duration: 1.4,
       easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      direction: 'vertical',
-      gestureDirection: 'vertical',
-      smooth: true,
-      mouseMultiplier: 1,
       smoothTouch: false,
     });
-    function lenisRaf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(lenisRaf);
-    }
-    requestAnimationFrame(lenisRaf);
 
-    // Connect Lenis to GSAP ScrollTrigger
     if (window.ScrollTrigger) {
+      // Use GSAP ticker only — do NOT also start a manual rAF loop (causes double-tick)
       lenis.on('scroll', ScrollTrigger.update);
       gsap.ticker.add(time => lenis.raf(time * 1000));
       gsap.ticker.lagSmoothing(0);
+    } else {
+      function lenisRaf(time) { lenis.raf(time); requestAnimationFrame(lenisRaf); }
+      requestAnimationFrame(lenisRaf);
     }
   }
 
   /* ── Nav Scroll State ── */
   const nav = document.querySelector('.nav');
   if (nav) {
-    const updateNav = () => {
-      nav.classList.toggle('scrolled', window.scrollY > 60);
-    };
+    const updateNav = () => nav.classList.toggle('scrolled', window.scrollY > 60);
     window.addEventListener('scroll', updateNav, { passive: true });
     updateNav();
   }
 
   /* ── Hero Entrance Animation ── */
-  const heroLabel = document.querySelector('.hero-label');
-  const heroTitle = document.querySelector('.hero-title');
-  const heroSub   = document.querySelector('.hero-sub');
-  const heroAct   = document.querySelector('.hero-actions');
-  const heroScroll= document.querySelector('.hero-scroll');
+  const heroLabel  = document.querySelector('.hero-label');
+  const heroTitle  = document.querySelector('.hero-title');
+  const heroSub    = document.querySelector('.hero-sub');
+  const heroAct    = document.querySelector('.hero-actions');
+  const heroScroll = document.querySelector('.hero-scroll');
 
   if (heroTitle) {
     const chars = splitTextToChars(heroTitle);
     gsap.to(heroLabel, { opacity: 1, y: 0, duration: 0.8, delay: 0.3, ease: 'expo.out' });
-    gsap.to(chars, {
-      y: 0,
-      duration: 0.9,
-      delay: 0.5,
-      stagger: 0.025,
-      ease: 'expo.out',
-    });
-    gsap.to(heroTitle, { opacity: 1, duration: 0.1, delay: 0.5 });
-    gsap.to(heroSub, { opacity: 1, y: 0, duration: 0.8, delay: 0.9, ease: 'expo.out' });
-    gsap.to(heroAct, { opacity: 1, y: 0, duration: 0.8, delay: 1.1, ease: 'expo.out' });
-    gsap.to(heroScroll, { opacity: 1, duration: 0.8, delay: 1.5, ease: 'power2.out' });
+    // Fix: also reset the translateY(30px) set in CSS on the wrapper
+    gsap.to(heroTitle, { opacity: 1, y: 0, duration: 0.6, delay: 0.4, ease: 'expo.out' });
+    gsap.to(chars, { y: 0, duration: 0.9, delay: 0.5, stagger: 0.025, ease: 'expo.out' });
+    gsap.to(heroSub,    { opacity: 1, y: 0, duration: 0.8, delay: 0.9, ease: 'expo.out' });
+    gsap.to(heroAct,    { opacity: 1, y: 0, duration: 0.8, delay: 1.1, ease: 'expo.out' });
+    gsap.to(heroScroll, { opacity: 1,       duration: 0.8, delay: 1.5, ease: 'power2.out' });
   }
 
   /* ── GSAP ScrollTrigger Reveals ── */
   if (window.ScrollTrigger) {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Generic reveals
     document.querySelectorAll('.reveal-up').forEach(el => {
       gsap.to(el, {
         opacity: 1, y: 0, duration: 0.9, ease: 'expo.out',
@@ -111,10 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const chars = splitTextToChars(el);
       gsap.set(el, { opacity: 1 });
       gsap.to(chars, {
-        y: 0,
-        duration: 0.8,
-        stagger: 0.02,
-        ease: 'expo.out',
+        y: 0, duration: 0.8, stagger: 0.02, ease: 'expo.out',
         scrollTrigger: { trigger: el, start: 'top 80%', once: true },
       });
     });
@@ -140,31 +133,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // About stats counter
     document.querySelectorAll('.about-stat-num[data-count]').forEach(el => {
       const target = parseInt(el.dataset.count);
-      const obj    = { val: 0 };
       const suffix = el.dataset.suffix || '';
+      const obj = { val: 0 };
       ScrollTrigger.create({
-        trigger: el,
-        start: 'top 80%',
-        once: true,
+        trigger: el, start: 'top 80%', once: true,
         onEnter() {
           gsap.to(obj, {
             val: target, duration: 1.5, ease: 'power2.out',
-            onUpdate() { el.innerHTML = Math.round(obj.val) + suffix + (el.querySelector('span') ? '<span>+</span>' : ''); },
+            onUpdate() {
+              const v = Math.round(obj.val);
+              el.innerHTML = suffix ? `${v}<span>${suffix}</span>` : `${v}`;
+            },
           });
         },
       });
     });
 
-    // Parallax on about image
-    const aboutCanvas = document.getElementById('about-canvas');
-    if (aboutCanvas) {
-      gsap.to(aboutCanvas, {
-        yPercent: -15, ease: 'none',
+    // Parallax on about image wrapper (not the canvas itself)
+    const aboutWrap = document.querySelector('.about-img-wrap');
+    if (aboutWrap) {
+      gsap.to(aboutWrap, {
+        yPercent: -8, ease: 'none',
         scrollTrigger: {
-          trigger: '#about',
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: true,
+          trigger: '#about', start: 'top bottom', end: 'bottom top', scrub: true,
         },
       });
     }
@@ -180,15 +171,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroBouquet = document.getElementById('hero-bouquet');
   if (heroBouquet && window.THREE && window.Bouquet3D) {
     const canvas = document.createElement('canvas');
-    canvas.style.cssText = 'width:100%;height:100%;display:block;';
+    canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block;';
     heroBouquet.appendChild(canvas);
-    new Bouquet3D(canvas, { rotate: true, alpha: true });
+    // Small delay to let browser compute layout before reading dimensions
+    requestAnimationFrame(() => new Bouquet3D(canvas, { rotate: true, alpha: true }));
   }
 
   /* ── Three.js: About Bouquet ── */
   const aboutCanvas = document.getElementById('about-canvas');
   if (aboutCanvas && window.THREE && window.Bouquet3D) {
-    new Bouquet3D(aboutCanvas, { rotate: true, alpha: false, bg: 0x0d1a0e });
+    requestAnimationFrame(() => new Bouquet3D(aboutCanvas, { rotate: true, alpha: false, bg: 0x0d1a0e }));
   }
 
   /* ── Catalog WebGL Cards ── */
@@ -205,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
     new BarbarisFollower();
   }
 
-  /* ── Marquee: duplicate items for seamless loop ── */
+  /* ── Marquee: duplicate for seamless loop ── */
   const track = document.querySelector('.marquee-track');
   if (track) {
     track.innerHTML += track.innerHTML;
@@ -214,8 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ────────────────────────────────────────────
-   CATALOG CARDS — procedural gradient previews
-   + hover distortion via Three.js plane
+   CATALOG CARDS - procedural gradient + hover WebGL distortion
    ──────────────────────────────────────────── */
 function initCatalogCards() {
   const cards = document.querySelectorAll('.product-card-canvas');
@@ -235,7 +226,12 @@ function initCatalogCards() {
     const pal = palettes[i % palettes.length];
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
     renderer.setPixelRatio(1);
-    renderer.setSize(canvas.clientWidth || 300, canvas.clientHeight || 400);
+
+    // Read parent size (canvas has width:100%;height:100% from CSS)
+    const parent = canvas.parentElement;
+    const W = parent ? parent.clientWidth : (canvas.clientWidth || 300);
+    const H = parent ? parent.clientHeight : (canvas.clientHeight || 400);
+    renderer.setSize(W, H, false); // false = don't override CSS
 
     const scene  = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
@@ -275,9 +271,8 @@ function initCatalogCards() {
           vec2 uv = vUv;
           float t = u_time * 0.3;
 
-          // Distortion wave from mouse on hover
-          float dist  = length(uv - u_mouse);
-          float wave  = sin(dist * 12.0 - t * 4.0) * u_hover * 0.06 / (dist + 0.3);
+          float dist = length(uv - u_mouse);
+          float wave = sin(dist * 12.0 - t * 4.0) * u_hover * 0.06 / (dist + 0.3);
           uv += vec2(wave);
 
           float n1 = snoise(uv * 2.5 + t);
@@ -288,7 +283,6 @@ function initCatalogCards() {
           col = mix(col, u_color3, smoothstep(0.4, 0.8, n + uv.y * 0.5 - 0.2));
           col += u_color4 * 0.12 * smoothstep(0.6, 1.0, n);
 
-          // Vignette
           float v = 1.0 - smoothstep(0.4, 1.0, length((uv - 0.5) * 1.4));
           col *= v * 0.85 + 0.15;
 
@@ -322,80 +316,74 @@ function initCatalogCards() {
       renderer.render(scene, camera);
     }
     tick();
+
+    // Resize observer for responsive canvas
+    if (window.ResizeObserver && parent) {
+      new ResizeObserver(() => {
+        renderer.setSize(parent.clientWidth, parent.clientHeight, false);
+      }).observe(parent);
+    }
   });
 }
 
 /* ────────────────────────────────────────────
-   PETAL CONFETTI (tsParticles)
+   PETAL CONFETTI (tsParticles v2 compatible)
    ──────────────────────────────────────────── */
 function initPetalConfetti() {
-  const triggers = document.querySelectorAll('.confetti-trigger');
-  if (!triggers.length || !window.tsParticles) return;
+  if (!window.tsParticles) return;
 
-  triggers.forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const container = await tsParticles.load({
-        id: 'petal-confetti-' + Date.now(),
-        options: {
-          fullScreen: { enable: true, zIndex: 9999 },
-          background: { color: { value: 'transparent' } },
-          fpsLimit: 60,
-          particles: {
-            number: { value: 80 },
-            color: { value: ['#5a9b6a','#3d6b47','#d4c5a9','#c23b5e','#e87fa0','#7bc48a','#f0ebe2'] },
-            shape: {
-              type: 'custom',
-              custom: {
-                petal: {
-                  draw(context, particle, radius) {
-                    const r = radius;
-                    context.beginPath();
-                    context.moveTo(0, 0);
-                    context.bezierCurveTo(-r * 0.8, r * 0.3, -r, r * 0.8, 0, r * 1.2);
-                    context.bezierCurveTo(r, r * 0.8, r * 0.8, r * 0.3, 0, 0);
-                    context.closePath();
-                    context.fillStyle = particle.getFillColor()?.toString() || '#5a9b6a';
-                    context.fill();
-                  },
-                },
-              },
-            },
-            opacity: { value: { min: 0.6, max: 1 } },
-            size: { value: { min: 6, max: 14 } },
-            move: {
-              enable: true,
-              speed: { min: 2, max: 6 },
-              direction: 'bottom',
-              random: true,
-              straight: false,
-              outModes: { default: 'out' },
-              gravity: { enable: true, acceleration: 1.5 },
-              drift: { min: -1, max: 1 },
-            },
-            rotate: {
-              value: { min: 0, max: 360 },
-              direction: 'random',
-              animation: { enable: true, speed: 15, sync: false },
-            },
-            wobble: { enable: true, distance: 10, speed: { angle: 10, move: 3 } },
-            life: { duration: { value: 4, sync: false }, count: 1 },
+  async function fireConfetti() {
+    const id = 'confetti-' + Date.now();
+    const container = await tsParticles.load({
+      id,
+      options: {
+        fullScreen: { enable: true, zIndex: 9999 },
+        background: { color: { value: 'transparent' } },
+        fpsLimit: 60,
+        particles: {
+          number: { value: 0 },
+          color: { value: ['#5a9b6a', '#3d6b47', '#d4c5a9', '#c23b5e', '#e87fa0', '#7bc48a', '#f0ebe2'] },
+          shape: { type: ['circle', 'square', 'triangle'] },
+          opacity: { value: { min: 0.5, max: 0.9 } },
+          size: { value: { min: 4, max: 11 } },
+          rotate: {
+            value: { min: 0, max: 360 },
+            direction: 'random',
+            animation: { enable: true, speed: 25, sync: false },
           },
-          emitters: {
-            position: { x: 50, y: 30 },
-            rate: { quantity: 3, delay: 0.05 },
-            life: { count: 1, duration: 1.5 },
+          move: {
+            enable: true,
+            speed: { min: 3, max: 7 },
+            direction: 'bottom',
+            random: true,
+            straight: false,
+            outModes: { default: 'out' },
+            gravity: { enable: true, acceleration: 2.5 },
+            drift: { min: -2, max: 2 },
           },
+          wobble: { enable: true, distance: 12, speed: { angle: 8, move: 4 } },
+          life: { duration: { sync: false, value: 5 }, count: 1 },
         },
-      });
-
-      // Auto destroy
-      setTimeout(() => container?.destroy(), 5000);
+        emitters: {
+          position: { x: 50, y: 25 },
+          rate: { quantity: 6, delay: 0.06 },
+          life: { count: 1, duration: 2 },
+        },
+      },
     });
+    setTimeout(() => container?.destroy(), 7000);
+  }
+
+  document.querySelectorAll('.confetti-trigger').forEach(btn => {
+    btn.addEventListener('click', fireConfetti);
   });
+
+  // Expose for programmatic use (form submit)
+  window._fireConfetti = fireConfetti;
 }
 
 /* ────────────────────────────────────────────
-   ORDER FORM — Telegram webhook
+   ORDER FORM - Telegram webhook
    ──────────────────────────────────────────── */
 function initOrderForm() {
   const form = document.getElementById('order-form');
@@ -404,7 +392,7 @@ function initOrderForm() {
   form.addEventListener('submit', async e => {
     e.preventDefault();
 
-    const btn = form.querySelector('.btn-submit');
+    const btn     = form.querySelector('.btn-submit');
     const success = form.querySelector('.form-success');
 
     const data = {
@@ -419,9 +407,9 @@ function initOrderForm() {
     btn.querySelector('span').textContent = 'Відправляємо…';
 
     try {
-      const res = await fetch('/api/order', {
+      const res = await fetch('https://formspree.io/f/xvgzqkwp', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(data),
       });
 
@@ -430,16 +418,9 @@ function initOrderForm() {
         form.querySelector('.form-submit-wrap').style.display = 'none';
         if (success) {
           success.style.display = 'block';
-          gsap.from(success, { opacity: 0, y: 20, duration: 0.6, ease: 'expo.out' });
+          if (window.gsap) gsap.from(success, { opacity: 0, y: 20, duration: 0.6, ease: 'expo.out' });
         }
-
-        // Trigger confetti
-        const confettiBtn = document.createElement('button');
-        confettiBtn.className = 'confetti-trigger';
-        document.body.appendChild(confettiBtn);
-        initPetalConfetti();
-        confettiBtn.click();
-        setTimeout(() => confettiBtn.remove(), 5100);
+        if (window._fireConfetti) window._fireConfetti();
       } else {
         throw new Error('Server error');
       }
