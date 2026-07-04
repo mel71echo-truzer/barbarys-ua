@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "qa": "python3 -m http.server 3333 --directory /workspace/barbarys-ua &>/tmp/qa-server.log & sleep 1 && PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers npx playwright test visual-qa.spec.js --reporter=list; kill %1 2>/dev/null; true",
+    "qa:screenshot": "python3 -m http.server 3333 --directory /workspace/barbarys-ua &>/tmp/qa-server.log & sleep 1 && PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers npx playwright test visual-qa.spec.js --reporter=list -g 'screenshot'; kill %1 2>/dev/null; echo 'Screenshots: /tmp/qa-home.png /tmp/qa-product.png'"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.1"
+  }
+}
