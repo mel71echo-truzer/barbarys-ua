@@ -34,29 +34,34 @@ function createRose(hexColor, size, extraLayers) {
   extraLayers = extraLayers !== undefined ? extraLayers : 0;
 
   const g = new THREE.Group();
+  // tiltZ = how far petal leans outward from vertical (0 = upright, 1.3 = nearly flat)
+  // tiltX kept near 0 so petals stand upright, not horizontal
+  // w varies: inner petals narrow, outer wider
   let layers = [
-    { n: 5, r: 0.12, h: 0.48, tiltZ: 0.25, tiltX: 1.0 },
-    { n: 6, r: 0.26, h: 0.62, tiltZ: 0.55, tiltX: 0.7 },
-    { n: 7, r: 0.40, h: 0.75, tiltZ: 0.85, tiltX: 0.45 },
-    { n: 8, r: 0.55, h: 0.82, tiltZ: 1.1,  tiltX: 0.2 },
-    { n: 9, r: 0.68, h: 0.85, tiltZ: 1.3,  tiltX: 0.0 },
+    { n: 5, r: 0.10, w: 0.18, h: 0.55, tiltZ: 0.15 },
+    { n: 6, r: 0.22, w: 0.20, h: 0.62, tiltZ: 0.35 },
+    { n: 7, r: 0.34, w: 0.22, h: 0.70, tiltZ: 0.60 },
+    { n: 8, r: 0.46, w: 0.25, h: 0.75, tiltZ: 0.90 },
+    { n: 9, r: 0.58, w: 0.25, h: 0.75, tiltZ: 1.20 },
   ];
   for (let e = 0; e < extraLayers; e++) {
-    layers.push({ n: 9 + e * 2, r: 0.78 + e * 0.12, h: 0.88, tiltZ: 1.45, tiltX: -0.15 });
+    layers.push({ n: 10 + e * 2, r: 0.68 + e * 0.12, w: 0.25, h: 0.75, tiltZ: 1.35 + e * 0.1 });
   }
 
   layers.forEach((l, li) => {
-    const geo = createPetalGeo(0.30 * size, l.h * size, 0.1 * size);
+    const geo = createPetalGeo(l.w * size, l.h * size, 0.08 * size);
     const col = new THREE.Color(hexColor);
     const mat = new THREE.MeshStandardMaterial({
       color: col, roughness: 0.45, metalness: 0,
       side: THREE.DoubleSide, transparent: true, opacity: 0.95,
     });
     for (let i = 0; i < l.n; i++) {
-      const a = (i / l.n) * Math.PI * 2 + li * 0.4;
+      const a = (i / l.n) * Math.PI * 2 + li * 0.38;
       const p = new THREE.Mesh(geo, mat);
+      // Place petal base at flower center offset, petal stands upright (Y axis)
       p.position.set(Math.cos(a) * l.r * size, 0, Math.sin(a) * l.r * size);
-      p.rotation.set(l.tiltX, -a, l.tiltZ);
+      // rotation.y faces petal outward; rotation.z tilts it outward from vertical
+      p.rotation.set(0, -a, l.tiltZ);
       g.add(p);
     }
   });
@@ -635,6 +640,7 @@ window.BouquetScene = class BouquetScene {
     this._renderer.toneMappingExposure    = 1.3;
     this._renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     this._renderer.setSize(W, H, false);
+    this._renderer.setClearColor(0x000000, 0);
 
     this._scene = new THREE.Scene();
     setupLighting(this._scene);
