@@ -38,8 +38,6 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="css/style.css">
-  <!-- 3D Model Viewer -->
-  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 </head>
 <body>
 
@@ -79,58 +77,21 @@
 </nav>
 
 <!-- ── HERO ── -->
-<section id="hero">
-  <!-- Celestial Bloom GLSL background -->
-  <canvas id="hero-canvas"></canvas>
-
-  <!-- 3D Bouquet -->
-  <div id="hero-bouquet"></div>
-
-  <!-- Barberry watermark brand mark -->
-  <svg class="hero-watermark" viewBox="0 0 100 140" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path d="M25 138 C30 118 45 95 55 72 C65 50 72 28 76 8" stroke="white" stroke-width="3" stroke-linecap="round"/>
-    <path d="M38 108 C22 98 25 80 42 90 C38 102 26 109 38 108Z" fill="white"/>
-    <path d="M47 88 C31 78 34 60 51 70 C47 82 35 89 47 88Z" fill="white"/>
-    <path d="M55 68 C39 58 42 40 59 50 C55 62 43 69 55 68Z" fill="white"/>
-    <path d="M63 48 C47 38 50 20 67 30 C63 42 51 49 63 48Z" fill="white"/>
-    <path d="M70 28 C56 20 59 5 74 14 C71 26 60 29 70 28Z" fill="white"/>
-    <path d="M38 110 L44 120" stroke="white" stroke-width="2" stroke-linecap="round"/>
-    <ellipse cx="47" cy="124" rx="5" ry="10" fill="white" transform="rotate(40 47 124)"/>
-    <path d="M46 92 L52 102" stroke="white" stroke-width="2" stroke-linecap="round"/>
-    <ellipse cx="55" cy="106" rx="5" ry="10" fill="white" transform="rotate(38 55 106)"/>
-    <path d="M54 72 L60 82" stroke="white" stroke-width="2" stroke-linecap="round"/>
-    <ellipse cx="63" cy="86" rx="5" ry="10" fill="white" transform="rotate(36 63 86)"/>
-    <path d="M62 52 L68 62" stroke="white" stroke-width="2" stroke-linecap="round"/>
-    <ellipse cx="71" cy="66" rx="4.5" ry="9" fill="white" transform="rotate(33 71 66)"/>
-    <path d="M68 34 L74 43" stroke="white" stroke-width="2" stroke-linecap="round"/>
-    <ellipse cx="77" cy="47" rx="4.5" ry="9" fill="white" transform="rotate(30 77 47)"/>
-    <path d="M73 16 L78 25" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
-    <ellipse cx="80.5" cy="28.5" rx="4" ry="8" fill="white" transform="rotate(25 80.5 28.5)"/>
-  </svg>
-
-  <div class="container">
-    <div class="hero-content">
-      <div class="hero-label">Авторська флористика · Київ</div>
-      <h1 class="hero-title">Квіти,<br><em>що говорять</em></h1>
-      <p class="hero-sub">
-        Кожен букет — це історія. Ми творимо флористичні композиції, які зворушують,
-        дивують і залишаються в пам'яті назавжди.
-      </p>
-      <div class="hero-actions">
-        <a href="#catalog" class="btn-primary confetti-trigger">
-          <span>Переглянути каталог</span>
-        </a>
-        <a href="#order" class="btn-outline">Зв'язатись з нами</a>
-      </div>
+<section id="hero" style="min-height:100vh; display:flex; align-items:center; padding: 0 8vw;">
+  <div style="max-width:680px">
+    <p style="letter-spacing:0.25em; font-size:0.75rem; color: var(--text-light); margin-bottom:2rem; font-family:'Raleway',sans-serif">
+      АВТОРСЬКА ФЛОРИСТИКА · КИЇВ
+    </p>
+    <h1>Квіти,<br><em>що говорять</em></h1>
+    <p style="margin: 2rem 0 3rem; max-width:420px; font-size:1.05rem; line-height:1.8; color:var(--text-light)">
+      Кожен букет — це історія. Ми творимо флористичні
+      композиції, які зворушують і залишаються в пам'яті.
+    </p>
+    <div style="display:flex; gap:1rem; flex-wrap:wrap">
+      <a href="#catalog" class="btn-primary">Переглянути каталог</a>
+      <a href="#order" class="btn-secondary">Зв'язатись</a>
     </div>
   </div>
-
-  <a href="#catalog" class="hero-scroll" aria-label="Прокрутити вниз">
-    <span>Scroll</span>
-    <svg class="hero-scroll-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M6 9l6 6 6-6"/>
-    </svg>
-  </a>
 </section>
 
 <!-- ── MARQUEE ── -->
@@ -159,14 +120,14 @@
         <div class="section-divider" aria-hidden="true">
           <svg width="16" height="19" viewBox="0 0 24 28" fill="none">
             <path d="M3 22 C6 16 12 10 21 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M8 18 C5.5 15 6.5 11 10 14 C9 17 7.5 18.5 8 18Z" fill="#3d6b47"/>
-            <path d="M13 12 C10.5 9 12 5.5 15.5 9 C14 12 12.5 13 13 12Z" fill="#3d6b47"/>
+            <path d="M8 18 C5.5 15 6.5 11 10 14 C9 17 7.5 18.5 8 18Z" fill="#A0522D"/>
+            <path d="M13 12 C10.5 9 12 5.5 15.5 9 C14 12 12.5 13 13 12Z" fill="#A0522D"/>
             <path d="M5.5 18.5 L8.2 21.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-            <ellipse cx="11" cy="24" rx="2" ry="4" fill="#8B1A1A" transform="rotate(45 11 24)"/>
+            <ellipse cx="11" cy="24" rx="2" ry="4" fill="#B8733A" transform="rotate(45 11 24)"/>
             <path d="M10.5 13 L12.2 14.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-            <ellipse cx="15" cy="17" rx="2" ry="4" fill="#8B1A1A" transform="rotate(45 15 17)"/>
+            <ellipse cx="15" cy="17" rx="2" ry="4" fill="#B8733A" transform="rotate(45 15 17)"/>
             <path d="M16 8 L17.2 9.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-            <ellipse cx="20" cy="12" rx="2" ry="4" fill="#8B1A1A" transform="rotate(45 20 12)"/>
+            <ellipse cx="20" cy="12" rx="2" ry="4" fill="#B8733A" transform="rotate(45 20 12)"/>
           </svg>
         </div>
         <div class="section-label">Наші роботи</div>
@@ -185,7 +146,7 @@
       <!-- Card 1 -->
       <div class="product-card" data-cursor="view" data-cursor-media="#3d1a25">
         <div class="product-card-visual gc-1">
-          <div class="product-card-placeholder"></div>
+          <div class="card-visual-clean"></div>
           <div class="product-card-badge">Хіт сезону</div>
           <div class="product-card-overlay">
             <a href="product.html?id=1" class="product-card-action">Детальніше</a>
@@ -202,7 +163,7 @@
       <!-- Card 2 -->
       <div class="product-card" data-cursor="view" data-cursor-media="#1a2e1c">
         <div class="product-card-visual gc-2">
-          <div class="product-card-placeholder"></div>
+          <div class="card-visual-clean"></div>
           <div class="product-card-badge">Новинка</div>
           <div class="product-card-overlay">
             <a href="product.html?id=2" class="product-card-action">Детальніше</a>
@@ -219,7 +180,7 @@
       <!-- Card 3 -->
       <div class="product-card" data-cursor="view" data-cursor-media="#2a1a30">
         <div class="product-card-visual gc-3">
-          <div class="product-card-placeholder"></div>
+          <div class="card-visual-clean"></div>
           <div class="product-card-overlay">
             <a href="product.html?id=3" class="product-card-action">Детальніше</a>
           </div>
@@ -235,7 +196,7 @@
       <!-- Card 4 -->
       <div class="product-card" data-cursor="view" data-cursor-media="#2e1a0e">
         <div class="product-card-visual gc-4">
-          <div class="product-card-placeholder"></div>
+          <div class="card-visual-clean"></div>
           <div class="product-card-badge">Популярне</div>
           <div class="product-card-overlay">
             <a href="product.html?id=4" class="product-card-action">Детальніше</a>
@@ -252,7 +213,7 @@
       <!-- Card 5 -->
       <div class="product-card" data-cursor="view" data-cursor-media="#1a2830">
         <div class="product-card-visual gc-5">
-          <div class="product-card-placeholder"></div>
+          <div class="card-visual-clean"></div>
           <div class="product-card-overlay">
             <a href="product.html?id=5" class="product-card-action">Детальніше</a>
           </div>
@@ -268,7 +229,7 @@
       <!-- Card 6 -->
       <div class="product-card" data-cursor="view" data-cursor-media="#301a1a">
         <div class="product-card-visual gc-6">
-          <div class="product-card-placeholder"></div>
+          <div class="card-visual-clean"></div>
           <div class="product-card-badge">Преміум</div>
           <div class="product-card-overlay">
             <a href="product.html?id=6" class="product-card-action">Детальніше</a>
@@ -292,7 +253,7 @@
     <div class="about-grid">
       <div class="about-visual reveal-left">
         <div class="about-img-wrap">
-          <canvas id="about-canvas"></canvas>
+          <div class="card-visual-clean" style="height:100%;min-height:400px;border-radius:12px;"></div>
         </div>
         <div class="about-stats">
           <div>
@@ -318,14 +279,14 @@
         <div class="section-divider" aria-hidden="true">
           <svg width="16" height="19" viewBox="0 0 24 28" fill="none">
             <path d="M3 22 C6 16 12 10 21 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M8 18 C5.5 15 6.5 11 10 14 C9 17 7.5 18.5 8 18Z" fill="#3d6b47"/>
-            <path d="M13 12 C10.5 9 12 5.5 15.5 9 C14 12 12.5 13 13 12Z" fill="#3d6b47"/>
+            <path d="M8 18 C5.5 15 6.5 11 10 14 C9 17 7.5 18.5 8 18Z" fill="#A0522D"/>
+            <path d="M13 12 C10.5 9 12 5.5 15.5 9 C14 12 12.5 13 13 12Z" fill="#A0522D"/>
             <path d="M5.5 18.5 L8.2 21.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-            <ellipse cx="11" cy="24" rx="2" ry="4" fill="#8B1A1A" transform="rotate(45 11 24)"/>
+            <ellipse cx="11" cy="24" rx="2" ry="4" fill="#B8733A" transform="rotate(45 11 24)"/>
             <path d="M10.5 13 L12.2 14.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-            <ellipse cx="15" cy="17" rx="2" ry="4" fill="#8B1A1A" transform="rotate(45 15 17)"/>
+            <ellipse cx="15" cy="17" rx="2" ry="4" fill="#B8733A" transform="rotate(45 15 17)"/>
             <path d="M16 8 L17.2 9.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-            <ellipse cx="20" cy="12" rx="2" ry="4" fill="#8B1A1A" transform="rotate(45 20 12)"/>
+            <ellipse cx="20" cy="12" rx="2" ry="4" fill="#B8733A" transform="rotate(45 20 12)"/>
           </svg>
         </div>
         <div class="section-label">Наша історія</div>
@@ -372,14 +333,14 @@
     <div class="section-divider" aria-hidden="true">
       <svg width="16" height="19" viewBox="0 0 24 28" fill="none">
         <path d="M3 22 C6 16 12 10 21 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        <path d="M8 18 C5.5 15 6.5 11 10 14 C9 17 7.5 18.5 8 18Z" fill="#3d6b47"/>
-        <path d="M13 12 C10.5 9 12 5.5 15.5 9 C14 12 12.5 13 13 12Z" fill="#3d6b47"/>
+        <path d="M8 18 C5.5 15 6.5 11 10 14 C9 17 7.5 18.5 8 18Z" fill="#A0522D"/>
+        <path d="M13 12 C10.5 9 12 5.5 15.5 9 C14 12 12.5 13 13 12Z" fill="#A0522D"/>
         <path d="M5.5 18.5 L8.2 21.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-        <ellipse cx="11" cy="24" rx="2" ry="4" fill="#8B1A1A" transform="rotate(45 11 24)"/>
+        <ellipse cx="11" cy="24" rx="2" ry="4" fill="#B8733A" transform="rotate(45 11 24)"/>
         <path d="M10.5 13 L12.2 14.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-        <ellipse cx="15" cy="17" rx="2" ry="4" fill="#8B1A1A" transform="rotate(45 15 17)"/>
+        <ellipse cx="15" cy="17" rx="2" ry="4" fill="#B8733A" transform="rotate(45 15 17)"/>
         <path d="M16 8 L17.2 9.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-        <ellipse cx="20" cy="12" rx="2" ry="4" fill="#8B1A1A" transform="rotate(45 20 12)"/>
+        <ellipse cx="20" cy="12" rx="2" ry="4" fill="#B8733A" transform="rotate(45 20 12)"/>
       </svg>
     </div>
     <div class="section-label" style="margin-bottom:1rem">Як це працює</div>
@@ -689,7 +650,6 @@
 <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
 
 <!-- App scripts -->
-<script src="js/shaders.js"></script>
 <script src="js/cursor.js"></script>
 <script src="js/main.js"></script>
 
