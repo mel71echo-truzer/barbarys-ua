@@ -389,51 +389,43 @@ function initPetalConfetti() {
 }
 
 /* ────────────────────────────────────────────
-   ORDER FORM - Telegram webhook
+   ORDER FORM - Web3Forms
    ──────────────────────────────────────────── */
 function initOrderForm() {
   const form = document.getElementById('order-form');
   if (!form) return;
 
-  form.addEventListener('submit', async e => {
+  form.addEventListener('submit', async function(e) {
     e.preventDefault();
 
-    const btn     = form.querySelector('.btn-submit');
-    const success = form.querySelector('.form-success');
-
-    const data = {
-      name:    form.querySelector('[name=name]')?.value.trim(),
-      phone:   form.querySelector('[name=phone]')?.value.trim(),
-      product: form.querySelector('[name=product]')?.value,
-      date:    form.querySelector('[name=date]')?.value,
-      message: form.querySelector('[name=message]')?.value.trim(),
-    };
+    const btn        = this.querySelector('button[type="submit"], .btn-submit');
+    const successMsg = document.getElementById('form-success')
+      || this.querySelector('.form-success, .success-message');
 
     btn.disabled = true;
-    btn.querySelector('span').textContent = 'Відправляємо…';
+    const btnSpan = btn.querySelector('span');
+    if (btnSpan) btnSpan.textContent = 'Надсилаємо…';
+    else btn.textContent = 'Надсилаємо…';
 
-    try {
-      const res = await fetch('https://formspree.io/f/xvgzqkwp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(data),
-      });
+    const res  = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: new FormData(this),
+    });
+    const json = await res.json();
 
-      if (res.ok) {
-        form.querySelectorAll('.form-group').forEach(g => g.style.display = 'none');
-        form.querySelector('.form-submit-wrap').style.display = 'none';
-        if (success) {
-          success.style.display = 'block';
-          if (window.gsap) gsap.from(success, { opacity: 0, y: 20, duration: 0.6, ease: 'expo.out' });
-        }
-        if (window._fireConfetti) window._fireConfetti();
-      } else {
-        throw new Error('Server error');
+    if (json.success) {
+      this.reset();
+      btn.style.display = 'none';
+      if (successMsg) {
+        successMsg.style.display = 'block';
+        if (window.gsap) gsap.from(successMsg, { opacity: 0, y: 20, duration: 0.6, ease: 'expo.out' });
       }
-    } catch {
+      if (window._fireConfetti) window._fireConfetti();
+    } else {
       btn.disabled = false;
-      btn.querySelector('span').textContent = 'Замовити';
-      alert('Щось пішло не так. Спробуйте ще раз або зателефонуйте нам.');
+      if (btnSpan) btnSpan.textContent = 'Замовити букет';
+      else btn.textContent = 'Замовити букет →';
+      alert('Помилка: ' + (json.message || 'спробуйте ще раз'));
     }
   });
 }

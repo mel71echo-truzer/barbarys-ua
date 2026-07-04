@@ -515,7 +515,11 @@
         Заповніть форму — наш флорист зв'яжеться з вами протягом 15 хвилин
       </p>
 
-      <form id="order-form" class="order-form">
+      <form id="order-form" class="order-form" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="82931fc1-b618-4d0c-acdf-7a65198c7d88">
+        <input type="hidden" name="subject" value="Нове замовлення — Барбарис 🌸">
+        <input type="hidden" name="from_name" value="Барбарис сайт">
+        <input type="hidden" name="redirect" value="false">
         <div class="form-group">
           <label class="form-label" for="name">Ваше ім'я</label>
           <input class="form-input" type="text" id="name" name="name"
