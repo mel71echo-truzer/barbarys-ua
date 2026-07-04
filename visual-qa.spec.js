@@ -58,13 +58,13 @@ test.describe('Барбарис — Visual QA', () => {
     expect(navHtml).not.toMatch(/>\s*·\s*</);
   });
 
-  test('body background is dark crimson (#120808)', async ({ page }) => {
+  test('body background is warm beige (#F5EDD8)', async ({ page }) => {
     await page.goto(BASE, { waitUntil: 'domcontentloaded' });
     const bg = await page.evaluate(() =>
       window.getComputedStyle(document.body).backgroundColor
     );
-    // #120808 = rgb(18, 8, 8)
-    expect(bg).toBe('rgb(18, 8, 8)');
+    // #F5EDD8 = rgb(245, 237, 216)
+    expect(bg).toBe('rgb(245, 237, 216)');
   });
 
   test('product page loads and screenshot saved', async ({ page }) => {
