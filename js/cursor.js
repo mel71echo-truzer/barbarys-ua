@@ -1,14 +1,13 @@
 /* ============================================================
    BARBARYS — Custom Cursor
-   Cuberto MouseFollower-style with media preview
+   transform3d only — no layout-triggering left/top in tick loop
    ============================================================ */
 
 window.BarbarisFollower = class BarbarisFollower {
   constructor() {
-    this.pos   = { x: -100, y: -100 };
-    this.target= { x: -100, y: -100 };
-    this.scale = 1;
-    this.state = 'default'; // default | hover | text | media | hidden
+    this.pos    = { x: -200, y: -200 }; // ring (lerped)
+    this.target = { x: -200, y: -200 }; // dot  (instant)
+    this._raf   = null;
 
     this._build();
     this._bind();
@@ -16,74 +15,84 @@ window.BarbarisFollower = class BarbarisFollower {
   }
 
   _build() {
-    // Outer ring
+    // ── Outer ring (lerped trailing) ──
     this.ring = document.createElement('div');
     this.ring.className = 'bc-ring';
     Object.assign(this.ring.style, {
-      position: 'fixed',
-      top: '0', left: '0',
-      width: '40px', height: '40px',
-      borderRadius: '50%',
-      border: '1px solid rgba(90,155,106,0.7)',
-      pointerEvents: 'none',
-      zIndex: '9999',
-      transform: 'translate(-50%, -50%)',
-      transition: 'width 0.4s cubic-bezier(0.16,1,0.3,1), height 0.4s cubic-bezier(0.16,1,0.3,1), border-color 0.3s, opacity 0.3s, background 0.4s',
-      willChange: 'transform',
-      mixBlendMode: 'normal',
+      position:           'fixed',
+      top:                '0',
+      left:               '0',
+      width:              '40px',
+      height:             '40px',
+      borderRadius:       '50%',
+      border:             '1px solid rgba(155,26,42,0.7)',
+      pointerEvents:      'none',
+      zIndex:             '9999',
+      transform:          'translate(calc(-200px - 50%), calc(-200px - 50%))',
+      transition:         'width 0.4s cubic-bezier(0.16,1,0.3,1), height 0.4s cubic-bezier(0.16,1,0.3,1), border-color 0.3s, opacity 0.3s, background 0.4s',
+      willChange:         'transform',
+      backfaceVisibility: 'hidden',
+      mixBlendMode:       'normal',
     });
 
-    // Dot
-    this.dot = document.createElement('div');
-    this.dot.className = 'bc-dot';
-    Object.assign(this.dot.style, {
-      position: 'fixed',
-      top: '0', left: '0',
-      width: '5px', height: '5px',
-      borderRadius: '50%',
-      background: '#5a9b6a',
-      pointerEvents: 'none',
-      zIndex: '10000',
-      transform: 'translate(-50%, -50%)',
-      willChange: 'transform',
-      transition: 'opacity 0.3s, transform 0.15s',
-    });
-
-    // Label
+    // ── Center label inside ring ──
     this.label = document.createElement('span');
     this.label.className = 'bc-label';
     Object.assign(this.label.style, {
-      position: 'absolute',
-      top: '50%', left: '50%',
-      transform: 'translate(-50%, -50%)',
-      fontFamily: "'DM Sans', sans-serif",
-      fontSize: '10px',
-      fontWeight: '500',
+      position:      'absolute',
+      top:           '50%',
+      left:          '50%',
+      transform:     'translate(-50%, -50%)',
+      fontFamily:    "'DM Sans', sans-serif",
+      fontSize:      '10px',
+      fontWeight:    '500',
       letterSpacing: '0.08em',
       textTransform: 'uppercase',
-      color: '#f0ebe2',
-      whiteSpace: 'nowrap',
-      opacity: '0',
-      transition: 'opacity 0.25s',
+      color:         '#f0e8d8',
+      whiteSpace:    'nowrap',
+      opacity:       '0',
+      transition:    'opacity 0.25s',
       pointerEvents: 'none',
     });
     this.ring.appendChild(this.label);
 
-    // Media preview
+    // ── Dot (instant, no lerp) ──
+    this.dot = document.createElement('div');
+    this.dot.className = 'bc-dot';
+    Object.assign(this.dot.style, {
+      position:           'fixed',
+      top:                '0',
+      left:               '0',
+      width:              '5px',
+      height:             '5px',
+      borderRadius:       '50%',
+      background:         '#9B1A2A',
+      pointerEvents:      'none',
+      zIndex:             '10000',
+      transform:          'translate(calc(-200px - 50%), calc(-200px - 50%))',
+      willChange:         'transform',
+      backfaceVisibility: 'hidden',
+      transition:         'opacity 0.3s',
+    });
+
+    // ── Media preview ──
     this.media = document.createElement('div');
     this.media.className = 'bc-media';
     Object.assign(this.media.style, {
-      position: 'fixed',
-      top: '0', left: '0',
-      width: '140px', height: '160px',
-      borderRadius: '12px',
-      overflow: 'hidden',
-      background: '#0d1a0e',
+      position:      'fixed',
+      top:           '0',
+      left:          '0',
+      width:         '140px',
+      height:        '160px',
+      borderRadius:  '12px',
+      overflow:      'hidden',
+      background:    '#1a0808',
       pointerEvents: 'none',
-      zIndex: '9997',
-      transform: 'translate(-50%, -50%) scale(0)',
-      transition: 'transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s',
-      border: '1px solid rgba(61,107,71,0.4)',
+      zIndex:        '9997',
+      transform:     'translate(calc(-200px - 50%), calc(-200px - 50%)) scale(0)',
+      transition:    'transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s',
+      border:        '1px solid rgba(123,16,32,0.4)',
+      willChange:    'transform',
     });
     this.mediaInner = document.createElement('div');
     Object.assign(this.mediaInner.style, { width: '100%', height: '100%' });
@@ -101,10 +110,10 @@ window.BarbarisFollower = class BarbarisFollower {
     });
 
     document.addEventListener('mousedown', () => {
-      this.ring.style.transform = `translate(-50%,-50%) scale(0.85)`;
+      this.ring.style.transform = `translate(calc(${this.pos.x}px - 50%), calc(${this.pos.y}px - 50%)) scale(0.85)`;
     });
     document.addEventListener('mouseup', () => {
-      this.ring.style.transform = `translate(-50%,-50%) scale(1)`;
+      this.ring.style.transform = `translate(calc(${this.pos.x}px - 50%), calc(${this.pos.y}px - 50%)) scale(1)`;
     });
 
     // Hover targets
@@ -113,21 +122,21 @@ window.BarbarisFollower = class BarbarisFollower {
       el.addEventListener('mouseleave', () => this._setState(null));
     });
 
-    // Media targets
+    // Media preview targets
     document.querySelectorAll('[data-cursor-media]').forEach(el => {
       el.addEventListener('mouseenter', () => {
         const src = el.dataset.cursorMedia;
-        this.mediaInner.style.background = `linear-gradient(135deg, #0d1a0e, #1a3320)`;
-        if (src.startsWith('#')) {
+        if (src && src.startsWith('#')) {
           this.mediaInner.style.background = src;
-        } else {
+          this.mediaInner.innerHTML = '';
+        } else if (src) {
           this.mediaInner.innerHTML = `<img src="${src}" style="width:100%;height:100%;object-fit:cover">`;
         }
-        this.media.style.transform = 'translate(-50%,-50%) scale(1)';
-        this.media.style.opacity = '1';
+        this._mediaVisible = true;
       });
       el.addEventListener('mouseleave', () => {
-        this.media.style.transform = 'translate(-50%,-50%) scale(0)';
+        this._mediaVisible = false;
+        this.media.style.transform = `translate(calc(${this.pos.x + 90}px - 50%), calc(${this.pos.y - 60}px - 50%)) scale(0)`;
         this.media.style.opacity = '0';
       });
     });
@@ -135,52 +144,53 @@ window.BarbarisFollower = class BarbarisFollower {
 
   _setState(el) {
     if (!el) {
-      // Reset
-      this.ring.style.width = '40px';
+      this.ring.style.width  = '40px';
       this.ring.style.height = '40px';
-      this.ring.style.background = 'transparent';
-      this.ring.style.borderColor = 'rgba(90,155,106,0.7)';
+      this.ring.style.background   = 'transparent';
+      this.ring.style.borderColor  = 'rgba(155,26,42,0.7)';
       this.label.style.opacity = '0';
-      this.dot.style.opacity = '1';
+      this.dot.style.opacity   = '1';
       return;
     }
 
     const cursor = el.dataset.cursor;
     if (cursor === 'view' || el.classList.contains('product-card')) {
-      this.ring.style.width = '80px';
+      this.ring.style.width  = '80px';
       this.ring.style.height = '80px';
-      this.ring.style.background = 'rgba(61,107,71,0.85)';
+      this.ring.style.background  = 'rgba(123,16,32,0.85)';
       this.ring.style.borderColor = 'transparent';
-      this.label.textContent = 'Детальніше';
+      this.label.textContent   = 'Детальніше';
       this.label.style.opacity = '1';
-      this.dot.style.opacity = '0';
+      this.dot.style.opacity   = '0';
     } else if (el.tagName === 'A' || el.tagName === 'BUTTON') {
-      this.ring.style.width = '54px';
+      this.ring.style.width  = '54px';
       this.ring.style.height = '54px';
-      this.ring.style.background = 'rgba(61,107,71,0.15)';
-      this.ring.style.borderColor = 'rgba(90,155,106,1)';
+      this.ring.style.background  = 'rgba(123,16,32,0.15)';
+      this.ring.style.borderColor = 'rgba(155,26,42,1)';
       this.label.style.opacity = '0';
-      this.dot.style.opacity = '1';
+      this.dot.style.opacity   = '1';
     }
   }
 
   _tick() {
     const lerp = (a, b, t) => a + (b - a) * t;
+
+    // Ring: lerp factor 0.12 — trailing aesthetic
     this.pos.x = lerp(this.pos.x, this.target.x, 0.12);
     this.pos.y = lerp(this.pos.y, this.target.y, 0.12);
 
-    const tx = `translate(-50%, -50%)`;
-    this.ring.style.left = `${this.pos.x}px`;
-    this.ring.style.top  = `${this.pos.y}px`;
+    // Ring — translate3d via calc to stay centered without touching top/left
+    this.ring.style.transform = `translate(calc(${this.pos.x}px - 50%), calc(${this.pos.y}px - 50%))`;
 
-    // Dot follows directly
-    this.dot.style.left = `${this.target.x}px`;
-    this.dot.style.top  = `${this.target.y}px`;
+    // Dot — instant (lerp factor = 1), no trailing
+    this.dot.style.transform = `translate(calc(${this.target.x}px - 50%), calc(${this.target.y}px - 50%))`;
 
-    // Media follows ring
-    this.media.style.left = `${this.pos.x + 90}px`;
-    this.media.style.top  = `${this.pos.y - 60}px`;
+    // Media preview follows ring with offset
+    if (this._mediaVisible) {
+      this.media.style.transform = `translate(calc(${this.pos.x + 90}px - 50%), calc(${this.pos.y - 60}px - 50%)) scale(1)`;
+      this.media.style.opacity = '1';
+    }
 
-    requestAnimationFrame(() => this._tick());
+    this._raf = requestAnimationFrame(() => this._tick());
   }
 };

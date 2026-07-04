@@ -1027,6 +1027,18 @@ footer .footer-bottom { color: #8B6060; border-top-color: rgba(240,235,226,0.1);
 }
 .mf-cursor-text { font-family: 'DM Sans', sans-serif; }
 
+/* ── Custom cursor elements (BarbarisFollower) ── */
+.bc-ring,
+.bc-dot,
+.bc-media {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
 /* ── SECTION DIVIDER (barberry motif) ── */
 .section-divider {
   display: flex;
