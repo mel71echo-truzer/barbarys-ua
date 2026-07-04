@@ -175,9 +175,9 @@ window.BarbarisFollower = class BarbarisFollower {
   _tick() {
     const lerp = (a, b, t) => a + (b - a) * t;
 
-    // Ring: lerp factor 0.12 — trailing aesthetic
-    this.pos.x = lerp(this.pos.x, this.target.x, 0.12);
-    this.pos.y = lerp(this.pos.y, this.target.y, 0.12);
+    // Ring: lerp factor 1.0 — instant, no trail
+    this.pos.x = lerp(this.pos.x, this.target.x, 1.0);
+    this.pos.y = lerp(this.pos.y, this.target.y, 1.0);
 
     // Ring — translate3d via calc to stay centered without touching top/left
     this.ring.style.transform = `translate(calc(${this.pos.x}px - 50%), calc(${this.pos.y}px - 50%))`;
