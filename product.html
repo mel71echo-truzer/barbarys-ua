@@ -11,6 +11,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <!-- 3D Model Viewer -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
   <style>
     .product-tabs { display: flex; gap: 2rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); }
     .product-tab {
@@ -86,8 +88,19 @@
     <div class="product-grid">
       <!-- 3D Viewer -->
       <div class="product-3d" style="position:relative;">
-        <canvas id="product-canvas"></canvas>
-        <div class="viewer-hint">Рухайте мишкою для обертання</div>
+        <model-viewer
+          id="product-viewer"
+          src="/models/karminна-nich.glb"
+          alt="Product 3D view"
+          auto-rotate
+          camera-controls
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          style="width:100%;height:100%;background:transparent;"
+          onerror="this.style.display='none';document.querySelector('.product-3d').classList.add('model-error')"
+        ></model-viewer>
+        <canvas id="product-canvas" style="display:none;"></canvas>
+        <div class="viewer-hint">Затисніть і рухайте для обертання</div>
       </div>
 
       <!-- Product Info -->
@@ -264,12 +277,12 @@
 
   /* ── Product data by ?id ── */
   const PRODUCTS = {
-    1: { title: 'Кармінна ніч',    desc: '15 бордових троянд «Burgundy», доповнений ніжним евкаліптом та перев\'язаний шовковою стрічкою.', price: '1 850 ₴', rating: '4.9 · 47 відгуків', gc: 'gc-1', badge: '' },
-    2: { title: 'Смарагдова весна', desc: 'Пишний букет із піонів, фрезії та зелених акцентів у крафтовій упаковці — свіжість та елегантність.', price: '2 200 ₴', rating: '5.0 · 62 відгуки',   gc: 'gc-2', badge: 'Новинка' },
-    3: { title: 'Бузкові мрії',    desc: 'Еустома, лаванда та гортензія в ніжній пастельній гамі — романтика та спокій у кожній пелюстці.',  price: '1 650 ₴', rating: '4.8 · 38 відгуків', gc: 'gc-3', badge: '' },
-    4: { title: 'Золота осінь',    desc: 'Хризантеми, гербери та лисячий хвіст у теплій золотаво-янтарній палітрі — тепло і затишок.',        price: '1 400 ₴', rating: '4.9 · 55 відгуків', gc: 'gc-4', badge: 'Популярне' },
-    5: { title: 'Морська лазур',   desc: 'Ірис, дельфіній та блакитні орхідеї — глибокі відтінки моря та безхмарного неба.',                  price: '2 100 ₴', rating: '5.0 · 29 відгуків', gc: 'gc-5', badge: '' },
-    6: { title: 'Ніжний шовк',     desc: 'Піони, тюльпани та біла гортензія в шовковій упаковці преміум-класу — вишуканість і ніжність.',      price: '3 200 ₴', rating: '5.0 · 41 відгук',   gc: 'gc-6', badge: 'Преміум' },
+    1: { title: 'Кармінна ніч',    desc: '15 бордових троянд «Burgundy», доповнений ніжним евкаліптом та перев\'язаний шовковою стрічкою.', price: '1 850 ₴', rating: '4.9 · 47 відгуків', gc: 'gc-1', badge: '',         model: '/models/karminна-nich.glb' },
+    2: { title: 'Смарагдова весна', desc: 'Пишний букет із піонів, фрезії та зелених акцентів у крафтовій упаковці — свіжість та елегантність.', price: '2 200 ₴', rating: '5.0 · 62 відгуки',   gc: 'gc-2', badge: 'Новинка',   model: '/models/smaragdova-vesna.glb' },
+    3: { title: 'Бузкові мрії',    desc: 'Еустома, лаванда та гортензія в ніжній пастельній гамі — романтика та спокій у кожній пелюстці.',  price: '1 650 ₴', rating: '4.8 · 38 відгуків', gc: 'gc-3', badge: '',         model: '/models/buzkovi-mriyi.glb' },
+    4: { title: 'Золота осінь',    desc: 'Хризантеми, гербери та лисячий хвіст у теплій золотаво-янтарній палітрі — тепло і затишок.',        price: '1 400 ₴', rating: '4.9 · 55 відгуків', gc: 'gc-4', badge: 'Популярне', model: '/models/zolota-osin.glb' },
+    5: { title: 'Морська лазур',   desc: 'Ірис, дельфіній та блакитні орхідеї — глибокі відтінки моря та безхмарного неба.',                  price: '2 100 ₴', rating: '5.0 · 29 відгуків', gc: 'gc-5', badge: '',         model: '/models/morska-lazur.glb' },
+    6: { title: 'Ніжний шовк',     desc: 'Піони, тюльпани та біла гортензія в шовковій упаковці преміум-класу — вишуканість і ніжність.',      price: '3 200 ₴', rating: '5.0 · 41 відгук',   gc: 'gc-6', badge: 'Преміум',  model: '/models/nizhnyi-shovk.glb' },
   };
 
   (function applyProduct() {
@@ -290,9 +303,13 @@
     const h1 = document.querySelector('h1.product-title');
     if (h1) document.title = `${p.title} — Барбарис`;
 
-    // Apply gradient to 3D viewer placeholder bg
-    const viewer = document.querySelector('.product-3d');
-    if (viewer) viewer.classList.add(p.gc);
+    // Apply gradient to 3D viewer placeholder bg (fallback when model absent)
+    const viewer3d = document.querySelector('.product-3d');
+    if (viewer3d) viewer3d.classList.add(p.gc);
+
+    // Update model-viewer src
+    const mv = document.getElementById('product-viewer');
+    if (mv && p.model) mv.setAttribute('src', p.model);
   })();
 
   document.addEventListener('DOMContentLoaded', () => {
