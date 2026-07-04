@@ -185,7 +185,7 @@
       <!-- Card 1 -->
       <div class="product-card" data-cursor="view" data-cursor-media="#3d1a25">
         <div class="product-card-visual gc-1">
-          <canvas class="bouquet-canvas" data-color="#C0392B"></canvas>
+          <div class="product-card-placeholder"></div>
           <div class="product-card-badge">Хіт сезону</div>
           <div class="product-card-overlay">
             <a href="product.html?id=1" class="product-card-action">Детальніше</a>
@@ -202,7 +202,7 @@
       <!-- Card 2 -->
       <div class="product-card" data-cursor="view" data-cursor-media="#1a2e1c">
         <div class="product-card-visual gc-2">
-          <canvas class="bouquet-canvas" data-color="#4CAF50"></canvas>
+          <div class="product-card-placeholder"></div>
           <div class="product-card-badge">Новинка</div>
           <div class="product-card-overlay">
             <a href="product.html?id=2" class="product-card-action">Детальніше</a>
@@ -219,7 +219,7 @@
       <!-- Card 3 -->
       <div class="product-card" data-cursor="view" data-cursor-media="#2a1a30">
         <div class="product-card-visual gc-3">
-          <canvas class="bouquet-canvas" data-color="#9B59B6"></canvas>
+          <div class="product-card-placeholder"></div>
           <div class="product-card-overlay">
             <a href="product.html?id=3" class="product-card-action">Детальніше</a>
           </div>
@@ -235,7 +235,7 @@
       <!-- Card 4 -->
       <div class="product-card" data-cursor="view" data-cursor-media="#2e1a0e">
         <div class="product-card-visual gc-4">
-          <canvas class="bouquet-canvas" data-color="#E67E22"></canvas>
+          <div class="product-card-placeholder"></div>
           <div class="product-card-badge">Популярне</div>
           <div class="product-card-overlay">
             <a href="product.html?id=4" class="product-card-action">Детальніше</a>
@@ -252,7 +252,7 @@
       <!-- Card 5 -->
       <div class="product-card" data-cursor="view" data-cursor-media="#1a2830">
         <div class="product-card-visual gc-5">
-          <canvas class="bouquet-canvas" data-color="#2980B9"></canvas>
+          <div class="product-card-placeholder"></div>
           <div class="product-card-overlay">
             <a href="product.html?id=5" class="product-card-action">Детальніше</a>
           </div>
@@ -268,7 +268,7 @@
       <!-- Card 6 -->
       <div class="product-card" data-cursor="view" data-cursor-media="#301a1a">
         <div class="product-card-visual gc-6">
-          <canvas class="bouquet-canvas" data-color="#E8B4B4"></canvas>
+          <div class="product-card-placeholder"></div>
           <div class="product-card-badge">Преміум</div>
           <div class="product-card-overlay">
             <a href="product.html?id=6" class="product-card-action">Детальніше</a>
@@ -690,7 +690,6 @@
 
 <!-- App scripts -->
 <script src="js/shaders.js"></script>
-<script src="js/bouquet3d.js"></script>
 <script src="js/cursor.js"></script>
 <script src="js/main.js"></script>
 
@@ -714,12 +713,6 @@
       });
     });
   }
-
-  // Init BouquetScene on each product card canvas
-  document.querySelectorAll('.bouquet-canvas').forEach(canvas => {
-    const color = canvas.dataset.color || '#C0392B';
-    try { new BouquetScene(canvas, { primaryColor: color }); } catch(e) { console.warn('BouquetScene init failed', e); }
-  });
 
   // Hero scroll IntersectionObserver fade
   const heroScroll = document.querySelector('.hero-scroll');

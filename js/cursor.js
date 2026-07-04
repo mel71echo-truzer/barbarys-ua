@@ -25,7 +25,7 @@ window.BarbarisFollower = class BarbarisFollower {
       width:              '40px',
       height:             '40px',
       borderRadius:       '50%',
-      border:             '1px solid rgba(155,26,42,0.7)',
+      border:             '1px solid rgba(160,82,45,0.7)',
       pointerEvents:      'none',
       zIndex:             '9999',
       transform:          'translate(calc(-200px - 50%), calc(-200px - 50%))',
@@ -48,7 +48,7 @@ window.BarbarisFollower = class BarbarisFollower {
       fontWeight:    '500',
       letterSpacing: '0.08em',
       textTransform: 'uppercase',
-      color:         '#f0e8d8',
+      color:         '#FFFAF5',
       whiteSpace:    'nowrap',
       opacity:       '0',
       transition:    'opacity 0.25s',
@@ -66,7 +66,7 @@ window.BarbarisFollower = class BarbarisFollower {
       width:              '5px',
       height:             '5px',
       borderRadius:       '50%',
-      background:         '#9B1A2A',
+      background:         '#A0522D',
       pointerEvents:      'none',
       zIndex:             '10000',
       transform:          'translate(calc(-200px - 50%), calc(-200px - 50%))',
@@ -147,7 +147,7 @@ window.BarbarisFollower = class BarbarisFollower {
       this.ring.style.width  = '40px';
       this.ring.style.height = '40px';
       this.ring.style.background   = 'transparent';
-      this.ring.style.borderColor  = 'rgba(155,26,42,0.7)';
+      this.ring.style.borderColor  = 'rgba(160,82,45,0.7)';
       this.label.style.opacity = '0';
       this.dot.style.opacity   = '1';
       return;
@@ -157,7 +157,7 @@ window.BarbarisFollower = class BarbarisFollower {
     if (cursor === 'view' || el.classList.contains('product-card')) {
       this.ring.style.width  = '80px';
       this.ring.style.height = '80px';
-      this.ring.style.background  = 'rgba(123,16,32,0.85)';
+      this.ring.style.background  = 'rgba(160,82,45,0.85)';
       this.ring.style.borderColor = 'transparent';
       this.label.textContent   = 'Детальніше';
       this.label.style.opacity = '1';
@@ -165,8 +165,8 @@ window.BarbarisFollower = class BarbarisFollower {
     } else if (el.tagName === 'A' || el.tagName === 'BUTTON') {
       this.ring.style.width  = '54px';
       this.ring.style.height = '54px';
-      this.ring.style.background  = 'rgba(123,16,32,0.15)';
-      this.ring.style.borderColor = 'rgba(155,26,42,1)';
+      this.ring.style.background  = 'rgba(160,82,45,0.15)';
+      this.ring.style.borderColor = 'rgba(160,82,45,1)';
       this.label.style.opacity = '0';
       this.dot.style.opacity   = '1';
     }
