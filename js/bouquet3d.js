@@ -358,7 +358,7 @@ window.Bouquet3D = class Bouquet3D {
     this.canvas = canvas;
     this.opts   = Object.assign({
       rotate:      true,
-      bg:          0x080f09,
+      bg:          0x0f0405,
       alpha:       true,
       interactive: true,
     }, options);
@@ -397,7 +397,7 @@ window.Bouquet3D = class Bouquet3D {
     this.camera.position.set(0, 1.5, 6.5);
     this.camera.lookAt(0, 0.5, 0);
 
-    this.scene.fog = new THREE.FogExp2(0x080f09, 0.12);
+    this.scene.fog = new THREE.FogExp2(0x0f0405, 0.12);
 
     this._addLights();
 
@@ -427,15 +427,15 @@ window.Bouquet3D = class Bouquet3D {
 
   _addLights() {
     const s = this.scene;
-    s.add(new THREE.AmbientLight(0x2d4a30, 2.5));
+    s.add(new THREE.AmbientLight(0x3a1a0a, 2.5));
     const key = new THREE.DirectionalLight(0xfff5e0, 3);
     key.position.set(3, 8, 5); key.castShadow = true; key.shadow.mapSize.set(1024, 1024);
     s.add(key);
-    const fill = new THREE.DirectionalLight(0xa8d5b5, 1.5);
+    const fill = new THREE.DirectionalLight(0xd4a882, 1.5);
     fill.position.set(-4, 2, 3); s.add(fill);
-    const rim = new THREE.DirectionalLight(0x3d8a52, 2);
+    const rim = new THREE.DirectionalLight(0x7B1020, 2);
     rim.position.set(0, -2, -5); s.add(rim);
-    const pt = new THREE.PointLight(0x7bc48a, 2, 6, 2);
+    const pt = new THREE.PointLight(0xc4884a, 2, 6, 2);
     pt.position.set(0, 1, 2); s.add(pt);
     this._glowLight = pt;
   }
@@ -548,7 +548,7 @@ window.Bouquet3D = class Bouquet3D {
     const wrapMat = new THREE.MeshStandardMaterial({ color: 0xd4c5a9, roughness: 0.9, transparent: true, opacity: 0.55, side: THREE.DoubleSide });
     const cone = new THREE.Mesh(new THREE.ConeGeometry(0.5, 2.2, 24, 1, true), wrapMat);
     cone.position.y = -0.3; this.group.add(cone);
-    const ribbon = new THREE.Mesh(new THREE.TorusGeometry(0.12, 0.025, 8, 20), new THREE.MeshStandardMaterial({ color: 0x3d6b47, roughness: 0.6, metalness: 0.1 }));
+    const ribbon = new THREE.Mesh(new THREE.TorusGeometry(0.12, 0.025, 8, 20), new THREE.MeshStandardMaterial({ color: 0x7B1020, roughness: 0.6, metalness: 0.1 }));
     ribbon.position.set(0, 0.8, 0.35); ribbon.rotation.x = Math.PI * 0.5; this.group.add(ribbon);
     const ruffMat = new THREE.MeshStandardMaterial({ color: 0xe0d4bc, roughness: 0.9, transparent: true, opacity: 0.8 });
     for (let i = 0; i < 12; i++) {

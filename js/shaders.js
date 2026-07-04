@@ -69,31 +69,31 @@ window.SHADERS = {
       float ca = cos(t * 0.15), sa = sin(t * 0.15);
       vec2 ruv = vec2(uv.x * ca - uv.y * sa, uv.x * sa + uv.y * ca);
 
-      // Base dark gradient
+      // Base dark gradient — deep chocolate
       float vignette = 1.0 - smoothstep(0.5, 1.8, length(uv));
-      vec3  col = vec3(0.031, 0.059, 0.035) * vignette;
+      vec3  col = vec3(0.06, 0.02, 0.02) * vignette;
 
-      // ── Layer 1: large rose (5 petals) ──
+      // ── Layer 1: large rose (5 petals) — warm gold ──
       float r1 = rosePetal(ruv * 0.9, 5.0, 0.55, 0.04);
       float sh1 = shimmer(ruv * 2.0, t);
-      vec3  c1  = mix(vec3(0.15, 0.3, 0.18), vec3(0.28, 0.55, 0.33), sh1);
+      vec3  c1  = mix(vec3(0.28, 0.14, 0.08), vec3(0.52, 0.32, 0.16), sh1);
       col += c1 * r1 * 0.45;
 
-      // ── Layer 2: inner rose (6 petals, rotated) ──
+      // ── Layer 2: inner rose (6 petals, rotated) — crimson-gold ──
       vec2 ruv2 = vec2(ruv.x * cos(t * 0.25 + 0.5) - ruv.y * sin(t * 0.25 + 0.5),
                        ruv.x * sin(t * 0.25 + 0.5) + ruv.y * cos(t * 0.25 + 0.5));
       float r2  = rosePetal(ruv2 * 1.4, 6.0, 0.38, 0.035);
       float sh2 = shimmer(ruv2 * 3.0, -t * 0.8);
-      vec3  c2  = mix(vec3(0.12, 0.28, 0.16), vec3(0.35, 0.72, 0.45), sh2);
+      vec3  c2  = mix(vec3(0.22, 0.06, 0.06), vec3(0.55, 0.20, 0.14), sh2);
       col += c2 * r2 * 0.35;
 
       // ── Layer 3: tiny cream center ──
       float r3 = rosePetal(ruv * 3.0, 4.0, 0.45, 0.05);
       float sh3 = shimmer(ruv * 5.0, t * 1.2);
-      vec3  c3  = mix(vec3(0.55, 0.48, 0.38), vec3(0.82, 0.77, 0.66), sh3);
-      col += c3 * r3 * 0.25;
+      vec3  c3  = mix(vec3(0.55, 0.42, 0.30), vec3(0.88, 0.78, 0.62), sh3);
+      col += c3 * r3 * 0.28;
 
-      // ── Radial shimmer spokes ──
+      // ── Radial shimmer spokes — warm amber ──
       float th   = atan(uv.y, uv.x);
       float spokes = 0.0;
       for (int i = 0; i < 8; i++) {
@@ -102,9 +102,9 @@ window.SHADERS = {
         spokes += pow(spoke, 16.0);
       }
       float sRad = ss(1.2, 0.1, length(uv)) * 0.06;
-      col += vec3(0.2, 0.45, 0.25) * spokes * sRad;
+      col += vec3(0.45, 0.22, 0.08) * spokes * sRad;
 
-      // ── Floating pollen particles ──
+      // ── Floating pollen particles — cream tint ──
       float pollen = 0.0;
       for (int i = 0; i < 12; i++) {
         float fi = float(i);
@@ -115,11 +115,11 @@ window.SHADERS = {
         float d = length(uv - pos);
         pollen += ss(0.03, 0.0, d) * (0.4 + 0.6 * sin(t * 2.0 + fi));
       }
-      col += vec3(0.7, 0.85, 0.55) * pollen * 0.12;
+      col += vec3(0.88, 0.78, 0.62) * pollen * 0.10;
 
-      // ── Global glow pulse ──
+      // ── Global glow pulse — deep red ──
       float pulse = 0.03 * sin(t * 0.8) + 0.03;
-      col += vec3(0.1, 0.25, 0.12) * pulse * vignette;
+      col += vec3(0.25, 0.06, 0.04) * pulse * vignette;
 
       // ── Tone map ──
       col = col / (col + 0.85);
