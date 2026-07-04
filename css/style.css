@@ -1174,9 +1174,24 @@ footer .footer-bottom { color: #8B6060; border-top-color: rgba(240,235,226,0.1);
   .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
   .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
   #hero-bouquet { width: 100%; opacity: 0.3; }
-  .hero-content { max-width: 100%; }
+  .hero-content { max-width: 100%; min-width: 0; width: 100%; }
+  .hero-label { font-size: 0.65rem; }
   .hero-actions { flex-wrap: wrap; }
+  .about-stats { position: static; margin-top: 1.5rem; width: 100%; }
+  .process-steps { grid-template-columns: 1fr; gap: 2rem; }
   .product-grid { grid-template-columns: 1fr; }
   .product-3d { position: static; }
   .section-header { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 480px) {
+  .container { padding: 0 1.25rem; }
+  h1 { font-size: clamp(1.8rem, 7vw, 2.8rem); }
+  h2 { font-size: clamp(1.6rem, 6.5vw, 2.5rem); }
+  .hero-actions { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  .btn-primary, .btn-outline { width: 100%; justify-content: center; }
+  .product-card-visual { aspect-ratio: 4/5; min-height: 220px; }
+  .order-inner { padding: 0; }
+  .footer-grid { gap: 1.5rem; }
+  .review-card { padding: 1.25rem; }
 }
