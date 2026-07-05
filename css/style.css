@@ -476,19 +476,35 @@ a { color: inherit; text-decoration: none; }
 
 .card-visual-clean {
   width: 100%;
-  height: 260px;
-  background: #E8D8C0;
+  height: 100%;
+  min-height: 280px;
+  background: linear-gradient(145deg, #EDE0CC 0%, #D9C9A8 55%, #C9B98A 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px 8px 0 0;
+  border-radius: 16px 16px 0 0;
+  position: relative;
+  overflow: hidden;
+}
+.card-visual-clean::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 65% 25%, rgba(255,255,255,0.18) 0%, transparent 55%);
+  pointer-events: none;
 }
 
 .card-visual-clean::after {
-  content: '✦';
-  font-size: 2rem;
-  color: rgba(160,82,45,0.25);
-  letter-spacing: 1rem;
+  content: '';
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid rgba(160,82,45,0.22);
+  box-shadow:
+    0 0 0 10px rgba(160,82,45,0.07),
+    0 0 0 22px rgba(160,82,45,0.035);
+  position: relative;
+  z-index: 1;
 }
 
 .btn-secondary {
@@ -668,7 +684,8 @@ a { color: inherit; text-decoration: none; }
 .about-feature-icon {
   width: 40px; height: 40px;
   border-radius: 10px;
-  background: rgba(123,24,24,0.15);
+  background: rgba(160,82,45,0.1);
+  border: 1px solid rgba(160,82,45,0.15);
   display: flex;
   align-items: center;
   justify-content: center;
